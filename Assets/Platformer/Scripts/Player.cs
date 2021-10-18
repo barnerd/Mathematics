@@ -6,11 +6,14 @@ public class Player : MonoBehaviour
 {
     public float walkSpeed;
     public float runSpeed;
+    public float crouchSpeed;
 
-    public float jumpHeight;
+    public float jumpForce;
 
     public InputController currentController;
     public Rigidbody2D rb;
+
+    public bool facingRight = true;
 
     public bool isGrounded;
     public Transform groundCheck;
@@ -47,9 +50,22 @@ public class Player : MonoBehaviour
         currentController.ProcessInput(gameObject);
     }
 
-    public void Movement(Vector2 move, Vector2 velocity)
+    public void Movement(Vector2 _move)
     {
-        rb.position += move;
-        rb.velocity += velocity;
+        rb.velocity = _move;
+    }
+
+    public void Jump()
+    {
+        rb.velocity = Vector2.up * jumpForce;
+        numJump++;
+    }
+
+    public void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scaler = transform.localScale;
+        scaler.x *= -1;
+        transform.localScale = scaler;
     }
 }
