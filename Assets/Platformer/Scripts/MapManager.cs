@@ -10,8 +10,14 @@ public class MapManager : MonoBehaviour
     public GameObject block;
     public GameObject endGoal;
 
-    private Vector2 spawnPoint;
-    private Vector2 endGoalLocation;
+    private Vector2Int spawnPoint;
+    private Vector2Int endGoalLocation;
+
+    public ItemPickup itemPU;
+    public ItemSet operatorsSet;
+    public Player player;
+
+    public IntReference score;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +25,7 @@ public class MapManager : MonoBehaviour
         gridWidth = block.GetComponent<SpriteRenderer>().bounds.size.x;
         gridHeight = block.GetComponent<SpriteRenderer>().bounds.size.y;
 
-        CreateLevel();
+        StartLevel();
     }
 
     // Update is called once per frame
@@ -28,9 +34,28 @@ public class MapManager : MonoBehaviour
 
     }
 
+    private Vector3 ConvertGridToVector(int _x, int _y)
+    {
+        return new Vector3(offset.x + _x * gridWidth, offset.y - _y * gridHeight, 0);
+    }
+
+    private Vector3 ConvertGridToVector(Vector2Int _point)
+    {
+        return ConvertGridToVector(_point.x, _point.y);
+    }
+
+    private void CreatePowerup(GameObject _pu, Item _i, int _x, int _y)
+    {
+        GameObject newGameObject = Instantiate(_pu, ConvertGridToVector(_x, _y), Quaternion.identity);
+        newGameObject.transform.SetParent(this.transform, false);
+
+        ItemPickup newItemPickup = newGameObject.GetComponent<ItemPickup>();
+        newItemPickup.item = _i;
+    }
+
     private void CreateBlock(GameObject _b, int _x, int _y)
     {
-        GameObject newBlock = Instantiate(_b, new Vector3(offset.x + _x * gridWidth, offset.y - _y * gridHeight, 0), Quaternion.identity);
+        GameObject newBlock = Instantiate(_b, ConvertGridToVector(_x, _y), Quaternion.identity);
         newBlock.transform.parent = this.transform;
     }
 
@@ -56,10 +81,23 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    private void StartLevel()
+    {
+        CreateLevel();
+
+        // reset level score
+        score.Value = 0;
+
+        // reset collection for level
+        operatorsSet.ResetCollection();
+
+        player.transform.position = ConvertGridToVector(spawnPoint);
+    }
+
     private void CreateLevel()
     {
-        spawnPoint = new Vector2(3, 14);
-        endGoalLocation = new Vector2(200, 14);
+        spawnPoint = new Vector2Int(3, 14);
+        endGoalLocation = new Vector2Int(200, 14);
 
         //first mario level
         //ground
@@ -79,6 +117,10 @@ public class MapManager : MonoBehaviour
         CreatePlatform(block, 21, 11, 5);
         CreateBlock(block, 23, 7);
 
+        CreatePowerup(itemPU.gameObject, operatorsSet.itemsInSet[0], 17, 10);
+        CreatePowerup(itemPU.gameObject, operatorsSet.itemsInSet[1], 23, 6);
+        CreatePowerup(itemPU.gameObject, operatorsSet.itemsInSet[2], 35, 7);
+        CreatePowerup(itemPU.gameObject, operatorsSet.itemsInSet[3], 46, 14);
         // first pipe
         CreateBlock(block, 29, 13);
         CreateBlock(block, 29, 14);

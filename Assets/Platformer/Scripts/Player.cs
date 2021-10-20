@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public int maxJumps;
     public int numJump;
 
+    public ItemSet operators;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,5 +69,16 @@ public class Player : MonoBehaviour
         Vector3 scaler = transform.localScale;
         scaler.x *= -1;
         transform.localScale = scaler;
+    }
+
+    public void CollectCollectionItem(ScriptableObject _item)
+    {
+        Debug.Log(this.name + " has collected a " + ((CollectionItem)_item).displayText);
+        operators.UpdateCollection(_item);
+    }
+
+    public void GainPowerUp(ScriptableObject _item)
+    {
+        Debug.Log(this.name + " has powered up with a " + ((PowerUpItem)_item).displayText);
     }
 }
