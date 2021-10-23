@@ -2,15 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+[RequireComponent(typeof(Character), typeof(Rigidbody2D))]
+public class CharacterMotor : MonoBehaviour
 {
-    public float walkSpeed;
-    public float runSpeed;
-    public float crouchSpeed;
-
-    public float jumpForce;
-
-    public InputController currentController;
+    public Character character;
     public Rigidbody2D rb;
 
     public bool facingRight = true;
@@ -18,19 +13,23 @@ public class Player : MonoBehaviour
     public bool isGrounded;
     public Transform groundCheck;
     public float groundCheckRadius;
+    public bool isFacingWall;
+    public Transform frontCheck;
+    public float frontCheckRadius;
     public LayerMask whatIsGround;
 
     public int maxJumps;
     public int numJump;
 
-    public ItemSet operators;
+    [Header("timer values for AI")]
+    public float nextTimeForAIUpdate;
+    public bool isPatrolling;
 
     // Start is called before the first frame update
     void Start()
     {
+        character = GetComponent<Character>();
         rb = GetComponent<Rigidbody2D>();
-
-        currentController.Initialize(gameObject);
 
         numJump = 0;
     }
@@ -38,7 +37,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isGrounded)
+        if (isGrounded || isFacingWall)
         {
             numJump = 0;
         }
@@ -48,8 +47,7 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
-
-        currentController.ProcessInput(gameObject);
+        isFacingWall = Physics2D.OverlapCircle(frontCheck.position, frontCheckRadius, whatIsGround);
     }
 
     public void Movement(Vector2 _move)
@@ -59,7 +57,7 @@ public class Player : MonoBehaviour
 
     public void Jump()
     {
-        rb.velocity = Vector2.up * jumpForce;
+        rb.velocity = Vector2.up * character.data.jumpForce;
         numJump++;
     }
 
@@ -69,16 +67,5 @@ public class Player : MonoBehaviour
         Vector3 scaler = transform.localScale;
         scaler.x *= -1;
         transform.localScale = scaler;
-    }
-
-    public void CollectCollectionItem(ScriptableObject _item)
-    {
-        Debug.Log(this.name + " has collected a " + ((CollectionItem)_item).displayText);
-        operators.UpdateCollection(_item);
-    }
-
-    public void GainPowerUp(ScriptableObject _item)
-    {
-        Debug.Log(this.name + " has powered up with a " + ((PowerUpItem)_item).displayText);
     }
 }

@@ -8,6 +8,7 @@ public class MapManager : MonoBehaviour
     private float gridWidth, gridHeight; // dimensions of each block
 
     public GameObject block;
+    public GameObject enemy;
     public GameObject endGoal;
 
     private Vector2Int spawnPoint;
@@ -15,9 +16,27 @@ public class MapManager : MonoBehaviour
 
     public ItemPickup itemPU;
     public ItemSet operatorsSet;
-    public Player player;
+    public Character player;
 
     public IntReference score;
+
+    [Header("GameObject Buckets")]
+    public GameObject blocks;
+    public GameObject items;
+    public GameObject enemies;
+
+    [Header("Enemies")]
+    public CharacterData enemya;
+    public CharacterData enemyb;
+    public CharacterData enemyc;
+    public CharacterData enemyx;
+    public CharacterData enemyy;
+    public CharacterData enemyz;
+
+    [Header("PowerUps")]
+    public PowerUpItem basicShields;
+    public PowerUpItem pushShields;
+    public PowerUpItem gunShields;
 
     // Start is called before the first frame update
     void Start()
@@ -47,16 +66,23 @@ public class MapManager : MonoBehaviour
     private void CreatePowerup(GameObject _pu, Item _i, int _x, int _y)
     {
         GameObject newGameObject = Instantiate(_pu, ConvertGridToVector(_x, _y), Quaternion.identity);
-        newGameObject.transform.SetParent(this.transform, false);
+        newGameObject.transform.SetParent(items.transform, false);
 
         ItemPickup newItemPickup = newGameObject.GetComponent<ItemPickup>();
         newItemPickup.item = _i;
     }
 
+    private void CreateEnemy(GameObject _e, CharacterData _c, int _x, int _y)
+    {
+        GameObject newEnemy = Instantiate(_e, ConvertGridToVector(_x, _y), Quaternion.identity);
+        newEnemy.transform.parent = enemies.transform;
+        newEnemy.GetComponent<Character>().data = _c;
+    }
+
     private void CreateBlock(GameObject _b, int _x, int _y)
     {
         GameObject newBlock = Instantiate(_b, ConvertGridToVector(_x, _y), Quaternion.identity);
-        newBlock.transform.parent = this.transform;
+        newBlock.transform.parent = blocks.transform;
     }
 
     private void CreatePlatform(GameObject _b, int _x, int _y, int _length)
@@ -99,6 +125,9 @@ public class MapManager : MonoBehaviour
         spawnPoint = new Vector2Int(3, 14);
         endGoalLocation = new Vector2Int(200, 14);
 
+        CreateEnemy(enemy, enemyc, 7, 13);
+        CreateEnemy(enemy, enemyc, 5, 14);
+
         //first mario level
         //ground
         CreatePlatform(block, 0, 15, 69);
@@ -127,11 +156,16 @@ public class MapManager : MonoBehaviour
         CreateBlock(block, 30, 13);
         CreateBlock(block, 30, 14);
 
+        CreateEnemy(enemy, enemya, 28, 12);
+
         // second pipe
         CreateBlock(block, 39, 13);
         CreateBlock(block, 39, 14);
         CreateBlock(block, 40, 13);
         CreateBlock(block, 40, 14);
+
+        CreateEnemy(enemy, enemyc, 40, 12);
+        CreateEnemy(enemy, enemyx, 43, 12);
 
         // third pipe
         CreateBlock(block, 47, 12);
@@ -141,6 +175,8 @@ public class MapManager : MonoBehaviour
         CreateBlock(block, 48, 13);
         CreateBlock(block, 48, 14);
 
+        CreateEnemy(enemy, enemyc, 48, 11);
+
         // forth pipe
         CreateBlock(block, 58, 12);
         CreateBlock(block, 58, 13);
@@ -148,6 +184,8 @@ public class MapManager : MonoBehaviour
         CreateBlock(block, 59, 12);
         CreateBlock(block, 59, 13);
         CreateBlock(block, 59, 14);
+
+        CreateEnemy(enemy, enemyc, 59, 11);
 
         CreatePlatform(block, 78, 11, 3);
         CreatePlatform(block, 81, 7, 8);
