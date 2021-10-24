@@ -57,6 +57,8 @@ public class Character : MonoBehaviour
         PowerUpItem powerUP = (PowerUpItem)_item;
 
         powerUps.Add(powerUP);
+        powerUps.Sort();
+
         UpdateDisplayText();
 
         if (powerUP.duration > 0)
