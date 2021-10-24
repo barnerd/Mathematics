@@ -25,3 +25,4 @@ MonoBehaviour:
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: d187b1ea17e6f45a3bde47c0abf30451, type: 2}
   _event: {fileID: 11400000, guid: 1aba57b0fbb9548d6b789ac5361c51af, type: 2}
+  duration: 30

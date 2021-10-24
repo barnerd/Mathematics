@@ -50,6 +50,16 @@ public class CharacterMotor : MonoBehaviour
         isFacingWall = Physics2D.OverlapCircle(frontCheck.position, frontCheckRadius, whatIsGround);
     }
 
+    public void UpdateGroundCheckPosition(Vector2 _position)
+    {
+        groundCheck.localPosition = _position;
+    }
+
+    public void UpdateFrontCheckPosition(Vector2 _position)
+    {
+        frontCheck.localPosition = _position;
+    }
+
     public void Movement(Vector2 _move)
     {
         rb.velocity = _move;

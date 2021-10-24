@@ -16,7 +16,7 @@ public class Item : ScriptableObject
 
     public virtual void CollectItem()
     {
-        // add score for collecting PowerUp
+        // add score for collecting Item
         gameScore.Value += numPoints * scoreMultiplier.Value;
 
         // spawn a cool effect

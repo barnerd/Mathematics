@@ -15,6 +15,6 @@ MonoBehaviour:
   walkSpeed: 2.5
   runSpeed: 7
   crouchSpeed: 1.5
-  jumpForce: 7.5
+  jumpForce: 6.5
   representation: c
   controller: {fileID: 11400000, guid: e2ef9adbca03d417290b53e480981cca, type: 2}

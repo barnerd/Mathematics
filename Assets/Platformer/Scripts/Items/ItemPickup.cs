@@ -37,10 +37,24 @@ public class ItemPickup : MonoBehaviour
     {
         if (collider.tag == "Player")
         {
-            item.CollectItem();
+            if(item is CollectionItem)
+            {
+                collider.GetComponent<Character>().CollectCollectionItem(item);
+            }
 
             // perform collection animation
             // perform collection sound
+
+            item.CollectItem();
+
+            Destroy(gameObject);
+        }
+
+        if (item is PowerUpItem)
+        {
+            collider.GetComponent<Character>().GainPowerUp(item);
+
+            item.CollectItem();
 
             Destroy(gameObject);
         }
