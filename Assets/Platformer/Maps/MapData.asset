@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b5aa66fe10c648dfba6f730c5c45797, type: 3}
-  m_Name: Player2
+  m_Script: {fileID: 11500000, guid: 1903ea99995fd4fab8d25fb3275c614b, type: 3}
+  m_Name: MapData
   m_EditorClassIdentifier: 
-  walkSpeed: 2.5
-  runSpeed: 7
-  crouchSpeed: 3
-  jumpForce: 5
-  damage: 1
-  maxHitPoints: 4
-  representation: 2
-  controller: {fileID: 11400000, guid: 765787f19d50f429bbdf2fa2664682dc, type: 2}
+  mapToLoad: Test

@@ -14,10 +14,16 @@ public class Character : MonoBehaviour
 
     public List<PowerUpItem> powerUps;
 
+    public GameEvent onPlayerDeath;
+
+    public int currentHitPoints;
+
     // Start is called before the first frame update
     void Start()
     {
         UpdateDisplayText();
+
+        currentHitPoints = data.maxHitPoints;
 
         currentController = data.controller;
         currentController.Initialize(gameObject);
@@ -87,6 +93,51 @@ public class Character : MonoBehaviour
         {
             // This is an error and shouldn't happen.
             Debug.LogError("Tried to remove powerup that this character doesn't have: " + powerUP);
+        }
+    }
+
+    public void Heal(int hitsHealed)
+    {
+        currentHitPoints += hitsHealed;
+
+        if (currentHitPoints > data.maxHitPoints)
+        {
+            currentHitPoints = data.maxHitPoints;
+        }
+    }
+
+    public void TakeHit(int damage = 1)
+    {
+        // TODO: check powerups
+        currentHitPoints -= damage;
+
+        if (currentHitPoints <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        if(onPlayerDeath != null)
+        {
+            // TODO: player death animation
+            onPlayerDeath.Raise();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.otherCollider.tag == "Player" && collision.collider.tag == "Enemy")
+        {
+            Character enemy = collision.collider.GetComponent<Character>();
+
+            TakeHit(enemy.data.damage);
+        }
+
+        if (collision.otherCollider.tag == "Enemy" && collision.collider.tag == "Enemy")
+        {
+            GetComponent<CharacterMotor>().Flip();
         }
     }
 }

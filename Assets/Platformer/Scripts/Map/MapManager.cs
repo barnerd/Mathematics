@@ -20,6 +20,8 @@ public class MapManager : MonoBehaviour
 
     public IntReference score;
 
+    public MapData mapData;
+
     [Header("~~~Testing~~~")]
     public bool createEnemies;
     public bool createItems;

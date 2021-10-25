@@ -16,5 +16,7 @@ MonoBehaviour:
   runSpeed: 7
   crouchSpeed: 1.5
   jumpForce: 1
+  damage: 1
+  maxHitPoints: 1
   representation: a
   controller: {fileID: 11400000, guid: 345bd4fd6cb914ab881d0b383c2c23bc, type: 2}

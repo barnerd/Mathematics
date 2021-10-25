@@ -11,6 +11,9 @@ public class CharacterData : ScriptableObject
 
     public float jumpForce;
 
+    public int damage;
+    public int maxHitPoints;
+
     public string representation;
 
     public InputController controller;
