@@ -18,9 +18,14 @@ public class Character : MonoBehaviour
 
     public int currentHitPoints;
 
+    public float vultnerabilityDuration;
+    private float nextTimeForCollision;
+
     // Start is called before the first frame update
     void Start()
     {
+        nextTimeForCollision = Time.time;
+
         UpdateDisplayText();
 
         currentHitPoints = data.maxHitPoints;
@@ -108,8 +113,30 @@ public class Character : MonoBehaviour
 
     public void TakeHit(int damage = 1)
     {
-        // TODO: check powerups
-        currentHitPoints -= damage;
+        PowerUpItem powerUp = null;
+        string powerUpName = "";
+
+        if (powerUps.Count > 0)
+        {
+            powerUp = powerUps[powerUps.Count - 1];
+            powerUpName = powerUp.name;
+        }
+
+        switch (powerUpName)
+        {
+            case "BasicShields":
+                RemovePowerUp(powerUp);
+                break;
+            case "PushShields":
+
+                break;
+            case "GunShields":
+
+                break;
+            default:
+                currentHitPoints -= damage;
+                break;
+        }
 
         if (currentHitPoints <= 0)
         {
@@ -119,25 +146,30 @@ public class Character : MonoBehaviour
 
     public void Die()
     {
-        if(onPlayerDeath != null)
+        if (onPlayerDeath != null)
         {
             // TODO: player death animation
-            onPlayerDeath.Raise();
+            onPlayerDeath.Raise(this);
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.otherCollider.tag == "Player" && collision.collider.tag == "Enemy")
+        if (Time.time > nextTimeForCollision)
         {
-            Character enemy = collision.collider.GetComponent<Character>();
+            nextTimeForCollision = Time.time + vultnerabilityDuration;
 
-            TakeHit(enemy.data.damage);
-        }
+            if (collision.otherCollider.tag == "Player" && collision.collider.tag == "Enemy")
+            {
+                Character enemy = collision.collider.GetComponent<Character>();
 
-        if (collision.otherCollider.tag == "Enemy" && collision.collider.tag == "Enemy")
-        {
-            GetComponent<CharacterMotor>().Flip();
+                TakeHit(enemy.data.damage);
+            }
+
+            if (collision.otherCollider.tag == "Enemy" && collision.collider.tag == "Enemy")
+            {
+                GetComponent<CharacterMotor>().Flip();
+            }
         }
     }
 }

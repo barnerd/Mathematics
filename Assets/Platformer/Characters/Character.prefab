@@ -291,6 +291,9 @@ MonoBehaviour:
   text: {fileID: 2176291564801868561}
   operators: {fileID: 11400000, guid: a64aff1114f174f2e8c5ae318644a3f7, type: 2}
   powerUps: []
+  onPlayerDeath: {fileID: 0}
+  currentHitPoints: 0
+  vultnerabilityDuration: 0.6
 --- !u!114 &2176291564832723422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,6 +322,7 @@ MonoBehaviour:
   numJump: 0
   nextTimeForAIUpdate: 0
   isPatrolling: 0
+  jumpInputTime: 0.3
 --- !u!1 &7522011540385758170
 GameObject:
   m_ObjectHideFlags: 0

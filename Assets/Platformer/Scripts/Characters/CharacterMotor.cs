@@ -25,6 +25,9 @@ public class CharacterMotor : MonoBehaviour
     public float nextTimeForAIUpdate;
     public bool isPatrolling;
 
+    public float jumpInputTime;
+    private float nextTimeForJump;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,7 @@ public class CharacterMotor : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         numJump = 0;
+        nextTimeForJump = Time.time;
     }
 
     // Update is called once per frame
@@ -67,8 +71,13 @@ public class CharacterMotor : MonoBehaviour
 
     public void Jump()
     {
-        rb.velocity = Vector2.up * character.data.jumpForce;
-        numJump++;
+        if (Time.time > nextTimeForJump)
+        {
+            nextTimeForJump = Time.time + jumpInputTime;
+
+            rb.velocity = Vector2.up * character.data.jumpForce;
+            numJump++;
+        }
     }
 
     public void Flip()
