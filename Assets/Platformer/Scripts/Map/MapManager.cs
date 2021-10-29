@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class MapManager : MonoBehaviour
     public IntReference score;
 
     public MapData mapData;
+
+    public string titleSceneName;
+    public float delayTime;
 
     [Header("~~~Testing~~~")]
     public bool createEnemies;
@@ -130,6 +134,22 @@ public class MapManager : MonoBehaviour
         operatorsSet.ResetCollection();
 
         player.transform.position = ConvertGridToVector(spawnPoint);
+    }
+
+    public void EndLevel(MonoBehaviour _player)
+    {
+        Time.timeScale = 0f;
+
+        StartCoroutine("LoadSceneRoutine");
+    }
+
+    private IEnumerator LoadSceneRoutine()
+    {
+        yield return new WaitForSecondsRealtime(delayTime);
+
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(titleSceneName);
     }
 
     private void CreateLevel()

@@ -1745,8 +1745,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathUI: {fileID: 1910738806}
-  titleSceneName: Title
-  delayTime: 3
 --- !u!4 &1296142868 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2176291564832723411, guid: 31a18fb654de74d98b05992378a31d5a, type: 3}
@@ -2089,6 +2087,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1861291145}
   - component: {fileID: 1861291144}
+  - component: {fileID: 1861291146}
   m_Layer: 0
   m_Name: MapCreator
   m_TagString: Untagged
@@ -2120,6 +2119,8 @@ MonoBehaviour:
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 104d1788848f84ee6ad55a6e6ca099d5, type: 2}
   mapData: {fileID: 11400000, guid: 37157c9c00c6644699ebea2609165770, type: 2}
+  titleSceneName: Title
+  delayTime: 3
   createEnemies: 1
   createItems: 1
   blocks: {fileID: 1074181615}
@@ -2151,6 +2152,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1861291146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861291143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15222d7d22c114b2c9246e7562855765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 97ca3421556ab4bd2b6ef319d4fdb0cf, type: 2}
+  SOResponse:
+    m_PersistentCalls:
+      m_Calls: []
+  MBResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1861291144}
+        m_TargetAssemblyTypeName: MapManager, Assembly-CSharp
+        m_MethodName: EndLevel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1910738806
 GameObject:
   m_ObjectHideFlags: 0
