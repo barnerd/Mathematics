@@ -25,6 +25,7 @@ public class PathFinder
         }
     }
 
+    // from https://forum.unity.com/threads/find-path-of-specific-length-between-point-a-and-b-on-grid.430509/
     public List<Vector2Int> FindPath(Vector2Int startNode, Vector2Int endNode, int pathLength, List<Vector2Int> forbiddenNodes, System.Random prng = null)
     {
         // the path has moved too far away, or path cannot be found
@@ -109,4 +110,18 @@ public class PathFinder
 
         return tempList;
     }
+
+    /*private void DisplayPath()
+    {
+        string row = "";
+        for (int y = roomHeight - 1; y >= 0; y--)
+        {
+            row += "\n";
+            for (int x = 0; x < roomWidth; x++)
+            {
+                row += pathDisplay[x, y] + " ";
+            }
+        }
+        Debug.Log(row);
+    }*/
 }

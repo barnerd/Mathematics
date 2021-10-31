@@ -159,72 +159,37 @@ public class MapManager : MonoBehaviour
         SceneManager.LoadScene(titleSceneName);
     }
 
-    private Vector2Int startRoom, endRoom;
-    private int roomWidth, roomHeight, pathLength;
-    public List<Vector2Int> path;
-    public int[,] pathDisplay;
-    public float areaPercent;
-
     private void CreateLevel()
     {
+        int pathLength;
+
+        // if seed is set, use it. else generate random map.
         System.Random prng = (mapData.seed == 0) ? new System.Random() : new System.Random(mapData.seed);
 
-        roomWidth = 6;
-        roomHeight = 5;
-        areaPercent = 0.5f;
-        pathLength = Mathf.FloorToInt((roomWidth * roomHeight) * areaPercent);
-
-        pathDisplay = new int[roomWidth, roomHeight];
+        pathLength = Mathf.FloorToInt((mapData.mapGridWidth * mapData.mapGridHeight) * mapData.mapGridPathCoveragePercent);
 
         // start with a grid of rooms, mapData.gridWidth, mapData.gridHeight
-        startRoom = new Vector2Int(prng.Next(0, roomWidth), prng.Next(0, roomHeight));
-        endRoom = new Vector2Int(prng.Next(0, roomWidth), prng.Next(0, roomHeight));
+        Vector2Int startRoom = new Vector2Int(prng.Next(0, mapData.mapGridWidth), prng.Next(0, mapData.mapGridHeight));
+        Vector2Int endRoom = new Vector2Int(prng.Next(0, mapData.mapGridWidth), prng.Next(0, mapData.mapGridHeight));
         // Ensure startRoom != endRoom
         while (startRoom == endRoom)
         {
-            endRoom = new Vector2Int(prng.Next(0, roomWidth), prng.Next(0, roomHeight));
+            endRoom = new Vector2Int(prng.Next(0, mapData.mapGridWidth), prng.Next(0, mapData.mapGridHeight));
         }
 
+        // ensure path of length can be achieved
         int manhattanDistance = Mathf.Abs(startRoom.x - endRoom.x) + Mathf.Abs(startRoom.y - endRoom.y);
+        if(manhattanDistance > pathLength)
+        {
+            pathLength = manhattanDistance;
+        }
         if (manhattanDistance % 2 != pathLength % 2)
         {
             pathLength += 1;
         }
 
-        pathDisplay[startRoom.x, startRoom.y] = 2;
-        pathDisplay[endRoom.x, endRoom.y] = 3;
-
-        DisplayPath();
-
-        PathFinder pf = new PathFinder(roomWidth, roomHeight);
-        float functionTime = Time.realtimeSinceStartup;
-        path = pf.FindPath(endRoom, startRoom, pathLength, new List<Vector2Int>(), prng);
-        functionTime = (Time.realtimeSinceStartup - functionTime) * 1000;
-        Debug.Log("The path was found in " + functionTime.ToString("0.0000") + " ms");
-
-        foreach (Vector2Int node in path)
-        {
-            //Debug.Log("node is (" + node.x + ", " + node.y + ")");
-            if (pathDisplay[node.x, node.y] == 0)
-            {
-                pathDisplay[node.x, node.y] = 1;
-            }
-        }
-        DisplayPath();
-    }
-
-    private void DisplayPath()
-    {
-        string row = "";
-        for (int y = roomHeight - 1; y >= 0; y--)
-        {
-            row += "\n";
-            for (int x = 0; x < roomWidth; x++)
-            {
-                row += pathDisplay[x, y] + " ";
-            }
-        }
-        Debug.Log(row);
+        PathFinder pf = new PathFinder(mapData.mapGridWidth, mapData.mapGridHeight);
+        List<Vector2Int> pathRooms = pf.FindPath(endRoom, startRoom, pathLength, new List<Vector2Int>(), prng);
     }
 
     private void LoadSecretLevel()

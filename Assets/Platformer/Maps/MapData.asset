@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: MapData
   m_EditorClassIdentifier: 
   mapToLoad: Test
+  seed: 1
+  mapGridWidth: 6
+  mapGridHeight: 5
+  mapGridPathCoveragePercent: 0.5
+  mapGridCoveragePercent: 0.66
