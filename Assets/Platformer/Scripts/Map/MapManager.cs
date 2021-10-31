@@ -125,7 +125,14 @@ public class MapManager : MonoBehaviour
 
     private void StartLevel()
     {
-        CreateLevel();
+        if (mapData.mapToLoad == "Secret")
+        {
+            LoadSecretLevel();
+        }
+        else
+        {
+            CreateLevel();
+        }
 
         // reset level score
         score.Value = 0;
@@ -152,10 +159,76 @@ public class MapManager : MonoBehaviour
         SceneManager.LoadScene(titleSceneName);
     }
 
+    private Vector2Int startRoom, endRoom;
+    private int roomWidth, roomHeight, pathLength;
+    public List<Vector2Int> path;
+    public int[,] pathDisplay;
+    public float areaPercent;
+
     private void CreateLevel()
     {
-        spawnPoint = new Vector2Int(3, 14);
-        endGoalLocation = new Vector2Int(200, 14);
+        roomWidth = 6;
+        roomHeight = 5;
+        areaPercent = 0.5f;
+        pathLength = Mathf.FloorToInt((roomWidth * roomHeight) * areaPercent);
+
+        pathDisplay = new int[roomWidth, roomHeight];
+
+        // start with a grid of rooms, mapData.gridWidth, mapData.gridHeight
+        startRoom = new Vector2Int(Random.Range(0, roomWidth), Random.Range(0, roomHeight));
+        endRoom = startRoom;
+        // Ensure startRoom != endRoom
+        while(startRoom == endRoom)
+        {
+            endRoom = new Vector2Int(Random.Range(0, roomWidth), Random.Range(0, roomHeight));
+        }
+
+        int manhattanDistance = Mathf.Abs(startRoom.x - endRoom.x) + Mathf.Abs(startRoom.y - endRoom.y);
+        if (manhattanDistance % 2 != pathLength % 2)
+        {
+            pathLength += 1;
+        }
+
+        pathDisplay[startRoom.x, startRoom.y] = 2;
+        pathDisplay[endRoom.x, endRoom.y] = 3;
+
+        DisplayPath();
+
+        PathFinder pf = new PathFinder(roomWidth, roomHeight);
+        float functionTime = Time.realtimeSinceStartup;
+        path = pf.FindPath(endRoom, startRoom, pathLength, new List<Vector2Int>());
+        functionTime = (Time.realtimeSinceStartup - functionTime) * 1000;
+        Debug.Log("The path was found in " + functionTime.ToString("0.0000") + " ms");
+
+        foreach (Vector2Int node in path)
+        {
+            //Debug.Log("node is (" + node.x + ", " + node.y + ")");
+            if (pathDisplay[node.x, node.y] == 0)
+            {
+                pathDisplay[node.x, node.y] = 1;
+            }
+        }
+        DisplayPath();
+    }
+
+    private void DisplayPath()
+    {
+        string row = "";
+        for (int y = roomHeight - 1; y >= 0; y--)
+        {
+            row += "\n";
+            for (int x = 0; x < roomWidth; x++)
+            {
+                row += pathDisplay[x, y] + " ";
+            }
+        }
+        Debug.Log(row);
+    }
+
+    private void LoadSecretLevel()
+    {
+        spawnPoint = new UnityEngine.Vector2Int(3, 14);
+        endGoalLocation = new UnityEngine.Vector2Int(200, 14);
 
         CreateEnemy(enemy, enemyc, 7, 13);
         CreateEnemy(enemy, enemyc, 5, 12);
