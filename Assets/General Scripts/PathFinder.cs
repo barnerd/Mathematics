@@ -89,14 +89,14 @@ public class PathFinder
     }
 
     // from https://forum.unity.com/threads/clever-way-to-shuffle-a-list-t-in-one-line-of-c-code.241052/#post-7501124
-    private List<Vector2Int> ShuffleList(List<Vector2Int> inputList)
+    public static List<T> ShuffleList<T>(List<T> inputList)
     {
-        //take any list of GameObjects and return it with Fischer-Yates shuffle
+        //take any list and return it with Fischer-Yates shuffle
         int i = 0;
-        int t = inputList.Count;
-        int r = 0;
-        Vector2Int p;
-        List<Vector2Int> tempList = new List<Vector2Int>();
+        int t = inputList.Count - 1;
+        int r;
+        T p;
+        List<T> tempList = new List<T>();
         tempList.AddRange(inputList);
 
         while (i < t)
