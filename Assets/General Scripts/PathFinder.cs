@@ -55,7 +55,7 @@ public class PathFinder
             }
 
             // randomize which neighborNodes to visit first
-            neighborNodes = shuffleGOList(neighborNodes);
+            neighborNodes = ShuffleList(neighborNodes);
 
             List<Vector2Int> newForbiddenNodes = new List<Vector2Int>(forbiddenNodes)
             {
@@ -89,7 +89,7 @@ public class PathFinder
     }
 
     // from https://forum.unity.com/threads/clever-way-to-shuffle-a-list-t-in-one-line-of-c-code.241052/#post-7501124
-    private List<Vector2Int> shuffleGOList(List<Vector2Int> inputList)
+    private List<Vector2Int> ShuffleList(List<Vector2Int> inputList)
     {
         //take any list of GameObjects and return it with Fischer-Yates shuffle
         int i = 0;
