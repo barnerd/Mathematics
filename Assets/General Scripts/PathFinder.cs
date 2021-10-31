@@ -25,7 +25,7 @@ public class PathFinder
         }
     }
 
-    public List<Vector2Int> FindPath(Vector2Int startNode, Vector2Int endNode, int pathLength, List<Vector2Int> forbiddenNodes)
+    public List<Vector2Int> FindPath(Vector2Int startNode, Vector2Int endNode, int pathLength, List<Vector2Int> forbiddenNodes, System.Random prng = null)
     {
         // the path has moved too far away, or path cannot be found
         int manhattanDistance = Mathf.Abs(startNode.x - endNode.x) + Mathf.Abs(startNode.y - endNode.y);
@@ -55,7 +55,7 @@ public class PathFinder
             }
 
             // randomize which neighborNodes to visit first
-            neighborNodes = ShuffleList(neighborNodes);
+            neighborNodes = ShuffleList(neighborNodes, prng);
 
             List<Vector2Int> newForbiddenNodes = new List<Vector2Int>(forbiddenNodes)
             {
@@ -66,8 +66,7 @@ public class PathFinder
             {
                 if (!newForbiddenNodes.Contains(neighbor))
                 {
-                    List<Vector2Int> currentPath = new List<Vector2Int>();
-                    currentPath = FindPath(neighbor, endNode, pathLength - 1, newForbiddenNodes);
+                    List<Vector2Int> currentPath = FindPath(neighbor, endNode, pathLength - 1, newForbiddenNodes, prng);
                     if (currentPath != null)
                     {
                         currentPath.Add(startNode);
@@ -89,7 +88,7 @@ public class PathFinder
     }
 
     // from https://forum.unity.com/threads/clever-way-to-shuffle-a-list-t-in-one-line-of-c-code.241052/#post-7501124
-    public static List<T> ShuffleList<T>(List<T> inputList)
+    public static List<T> ShuffleList<T>(List<T> inputList, System.Random prng = null)
     {
         //take any list and return it with Fischer-Yates shuffle
         int i = 0;
@@ -101,7 +100,7 @@ public class PathFinder
 
         while (i < t)
         {
-            r = Random.Range(i, tempList.Count);
+            r = (prng == null) ? Random.Range(i, tempList.Count) : prng.Next(i, tempList.Count);
             p = tempList[i];
             tempList[i] = tempList[r];
             tempList[r] = p;

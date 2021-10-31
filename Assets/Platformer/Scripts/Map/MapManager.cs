@@ -167,6 +167,8 @@ public class MapManager : MonoBehaviour
 
     private void CreateLevel()
     {
+        System.Random prng = (mapData.seed == 0) ? new System.Random() : new System.Random(mapData.seed);
+
         roomWidth = 6;
         roomHeight = 5;
         areaPercent = 0.5f;
@@ -175,12 +177,12 @@ public class MapManager : MonoBehaviour
         pathDisplay = new int[roomWidth, roomHeight];
 
         // start with a grid of rooms, mapData.gridWidth, mapData.gridHeight
-        startRoom = new Vector2Int(Random.Range(0, roomWidth), Random.Range(0, roomHeight));
-        endRoom = startRoom;
+        startRoom = new Vector2Int(prng.Next(0, roomWidth), prng.Next(0, roomHeight));
+        endRoom = new Vector2Int(prng.Next(0, roomWidth), prng.Next(0, roomHeight));
         // Ensure startRoom != endRoom
-        while(startRoom == endRoom)
+        while (startRoom == endRoom)
         {
-            endRoom = new Vector2Int(Random.Range(0, roomWidth), Random.Range(0, roomHeight));
+            endRoom = new Vector2Int(prng.Next(0, roomWidth), prng.Next(0, roomHeight));
         }
 
         int manhattanDistance = Mathf.Abs(startRoom.x - endRoom.x) + Mathf.Abs(startRoom.y - endRoom.y);
@@ -196,7 +198,7 @@ public class MapManager : MonoBehaviour
 
         PathFinder pf = new PathFinder(roomWidth, roomHeight);
         float functionTime = Time.realtimeSinceStartup;
-        path = pf.FindPath(endRoom, startRoom, pathLength, new List<Vector2Int>());
+        path = pf.FindPath(endRoom, startRoom, pathLength, new List<Vector2Int>(), prng);
         functionTime = (Time.realtimeSinceStartup - functionTime) * 1000;
         Debug.Log("The path was found in " + functionTime.ToString("0.0000") + " ms");
 

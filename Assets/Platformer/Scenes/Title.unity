@@ -700,6 +700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapData: {fileID: 11400000, guid: 37157c9c00c6644699ebea2609165770, type: 2}
+  seed: 1
 --- !u!1 &1290633058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1180,6 +1181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapData: {fileID: 11400000, guid: 37157c9c00c6644699ebea2609165770, type: 2}
+  seed: 0
 --- !u!114 &2081388149
 MonoBehaviour:
   m_ObjectHideFlags: 0

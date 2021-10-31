@@ -6,4 +6,5 @@ using UnityEngine;
 public class MapData : ScriptableObject
 {
     public string mapToLoad;
+    public int seed;
 }
